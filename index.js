@@ -31,6 +31,23 @@ async function run() {
 
     const taskCollection = client.db("taskManagerDB").collection("userTask");
 
+    // ///// Task api ///////////
+
+    app.post("/create-task", async (req, res) => {
+      //   console.log("hit");
+      //   res.send({ message: "hit" });
+      const task = req.body;
+      const result = await taskCollection.insertOne(task);
+      res.send(result);
+    });
+
+    app.get("/all-task/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await taskCollection.find(query).toArray();
+      res.send(result);
+    });
+
     /////////////////////////////////////
     //            api                  //
     /////////////////////////////////////
